@@ -1,56 +1,127 @@
-# kafka# kafka
+# 🚀 Apache Kafka – Producers & Consumers Playground
 
-Visão geral
------------
-Repositório com quatro módulos para demonstração e integração com Apache Kafka:
-- `json-producer` — produtor que emite mensagens com payload JSON.
-- `json-consumer` — consumidor que recebe e processa payloads JSON.
-- `string-producer` — produtor que envia mensagens como `String`.
-- `string-consumer` — consumidor que lê mensagens como `String`.
+[![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-Streaming-black)](https://kafka.apache.org/)
+[![Java](https://img.shields.io/badge/Java-21%2B-blue)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-Kafka-green)](https://spring.io/projects/spring-kafka)
 
-Objetivo
---------
-Fornecer exemplos simples e separados por tipo de payload para desenvolver, testar e validar padrões de integração com Kafka (produção, consumo, serialização, tolerância a falhas e observabilidade).
+Repositório oficial:
+👉 **[https://github.com/alexandreximenes/kafka](https://github.com/alexandreximenes/kafka)**
 
-Arquitetura (macro)
--------------------
-Componentes principais:
-- Produtores: enviam mensagens para tópicos específicos.
-- Broker(s) Kafka: roteia, persiste e replica mensagens.
-- Consumidores: leem mensagens de tópicos e executam lógica de processamento.
-- (Opcional) Schema Registry / Message validation para `json-*`.
+---
 
-Fluxo simplificado:
+## 📌 Visão Geral
 
-Producer (JSON/String)
+Este repositório reúne **exemplos práticos de Producers e Consumers utilizando Apache Kafka**, organizados por tipo de payload, com foco em **clareza, boas práticas e fácil experimentação**.
+
+O projeto foi pensado para servir como:
+
+* Playground de Kafka
+* Base de estudos
+* Referência para arquiteturas orientadas a eventos
+
+---
+
+## 🧱 Estrutura do Projeto
+
+```
+kafka/
+├── json-producer
+├── json-consumer
+├── string-producer
+└── string-consumer
+```
+
+### 📦 Módulos
+
+| Módulo            | Descrição                             |
+| ----------------- | ------------------------------------- |
+| `json-producer`   | Publica mensagens com payload JSON    |
+| `json-consumer`   | Consome e desserializa mensagens JSON |
+| `string-producer` | Publica mensagens no formato String   |
+| `string-consumer` | Consome mensagens String              |
+
+---
+
+## 🎯 Objetivo
+
+Demonstrar, de forma isolada e didática:
+
+* Produção e consumo de mensagens Kafka
+* Diferença entre payloads **JSON vs String**
+* Serialização e desserialização
+* Consumo em grupo
+* Base para retry, DLQ e observabilidade
+
+---
+
+## 🔄 Arquitetura (Visão Macro)
+
+```
+Producer (JSON / String)
         |
         v
-Kafka Topic(s)
+     Kafka Topic
         |
         v
-Consumer (JSON/String)
+Consumer (JSON / String)
+```
 
-Módulos e responsabilidades
----------------------------
-- `json-producer`
-  - Emite eventos estruturados (JSON).
-  - Deve incluir validação do payload e esquema (opcional: JSON Schema).
-  - Tópicos alvo: `topic.json.*` (convenção sugestiva).
-- `json-consumer`
-  - Desserializa JSON e aplica regras de negócio.
-  - Trata falhas de desserialização e reprocessamento.
-- `string-producer`
-  - Emite payloads simples de texto (logs, chaves simples).
-  - Tópicos alvo: `topic.string.*`.
-- `string-consumer`
-  - Consome e processa mensagens de texto.
+### Componentes
 
-Configuração essencial
-----------------------
-Parâmetros comuns (exemplos via variáveis de ambiente ou `application.properties`):
-- `BOOTSTRAP_SERVERS` / `bootstrap.servers` — endereço(s) do broker Kafka (ex: `localhost:9092`).
-- `GROUP_ID` / `group.id` — id do grupo de consumidores.
-- `KEY_SERIALIZER` / `VALUE_SERIALIZER` — serializers para produtores.
-- `KEY_DESERIALIZER` / `VALUE_DESERIALIZER` — deserializers para consumidores.
+* **Producer**: envia eventos para tópicos Kafka
+* **Kafka Broker**: persiste, replica e distribui mensagens
+* **Consumer**: processa eventos conforme regras de negócio
 
-Exemplo mínimo (variáveis de ambiente):
+---
+
+## ⚙️ Configuração Essencial
+
+Configurações comuns a todos os módulos:
+
+```properties
+bootstrap.servers=localhost:9092
+group.id=example-consumer-group
+```
+
+### Parâmetros Importantes
+
+| Propriedade          | Função                   |
+| -------------------- | ------------------------ |
+| `bootstrap.servers`  | Endereço do broker Kafka |
+| `group.id`           | Grupo do consumidor      |
+| `key.serializer`     | Serializer da chave      |
+| `value.serializer`   | Serializer do valor      |
+| `key.deserializer`   | Desserializer da chave   |
+| `value.deserializer` | Desserializer do valor   |
+
+---
+
+## 🧪 Casos de Uso
+
+* Testar serialização JSON no Kafka
+* Simular múltiplos consumers no mesmo grupo
+* Validar comportamento de offsets
+* Base para retry e Dead Letter Queue (DLQ)
+* Debug e aprendizado de Kafka na prática
+
+---
+
+## 🚀 Próximos Passos (Roadmap)
+
+* [x] Docker Compose (Kafka / KRaft)
+* [ ] Retry Topics
+* [ ] Dead Letter Queue (DLQ)
+* [ ] Schema Registry
+* [ ] Observabilidade (Metrics / Tracing)
+
+---
+
+## 📚 Referências
+
+* Apache Kafka — [https://kafka.apache.org](https://kafka.apache.org)
+* Spring Kafka — [https://spring.io/projects/spring-kafka](https://spring.io/projects/spring-kafka)
+
+---
+
+✨ Projeto mantido por **Alexandre Ximenes**
+Se este repositório te ajudou, deixe uma ⭐
