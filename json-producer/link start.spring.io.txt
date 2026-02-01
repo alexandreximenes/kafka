@@ -1,0 +1,1 @@
+https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.5.10&packaging=jar&configurationFileFormat=yaml&jvmVersion=21&groupId=com.kafka&artifactId=paymentEvent&name=paymentEvent&description=Processamento%20de%20pagamento&packageName=com.kafka.paymentEvent&dependencies=lombok,devtools,web,kafka

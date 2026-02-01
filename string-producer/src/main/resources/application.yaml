@@ -1,0 +1,20 @@
+server:
+    port: 8000
+spring:
+  application:
+    name: app-kafka-producer
+  kafka:
+    bootstrap-servers: localhost:9092
+
+app:
+  kafka:
+    topic:
+      name: str-topic
+      partitions: 2
+      replicas: 1
+
+logging:
+  level:
+    org:
+      apache:
+        kafka: DEBUG

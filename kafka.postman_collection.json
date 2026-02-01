@@ -1,0 +1,134 @@
+{
+  "info": {
+    "_postman_id": "4348a294-a1d7-4a10-a6e9-d4ba2683b317",
+    "name": "kafka",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "2140094"
+  },
+  "item": [
+    {
+      "name": "producer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Pega o valor atual do contador (ou inicia em 1)\r",
+              "let numero = pm.collectionVariables.get(\"numero\") || 2;\r",
+              "\r",
+              "// Define a variável para usar no body\r",
+              "pm.collectionVariables.set(\"numero\", numero);\r",
+              "\r",
+              "// Incrementa para a próxima execução\r",
+              "pm.collectionVariables.set(\"numero\", numero + 1);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"message\": \"mensagem {{numero}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/v1/producer",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "v1",
+            "producer"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "payment producer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Generate random values for payment request body\r",
+              "\r",
+              "// Random id between 1 and 10000 (number)\r",
+              "const id = Math.floor(Math.random() * 10000) + 1;\r",
+              "\r",
+              "// Random idUser between 1 and 1000 (number)\r",
+              "const idUser = Math.floor(Math.random() * 1000) + 1;\r",
+              "\r",
+              "// Random idProdutct between 1000 and 9999 (number)\r",
+              "const idProdutct = Math.floor(Math.random() * 9000) + 1000;\r",
+              "\r",
+              "// Random amount between 10.00 and 999.99 with 2 decimal places (number)\r",
+              "const amount = parseFloat((Math.random() * (999.99 - 10.00) + 10.00).toFixed(2));\r",
+              "\r",
+              "// Generate valid-looking 16-digit Visa card number (starts with 4) - string\r",
+              "let cardNumber = \"4\";\r",
+              "for (let i = 0; i < 15; i++) {\r",
+              "    cardNumber += Math.floor(Math.random() * 10);\r",
+              "}\r",
+              "\r",
+              "// Set variables for use in request body\r",
+              "pm.variables.set(\"id\", id);\r",
+              "pm.variables.set(\"idUser\", idUser);\r",
+              "pm.variables.set(\"idProdutct\", idProdutct);\r",
+              "pm.variables.set(\"amount\", amount);\r",
+              "pm.variables.set(\"cardNumber\", cardNumber);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": {{id}},\r\n  \"idUser\": {{idUser}},\r\n  \"idProdutct\": {{idProdutct}},\r\n  \"amount\": {{amount}},\r\n  \"cardNumber\": {{cardNumber}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/v1/payment",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "v1",
+            "payment"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "numero",
+      "value": ""
+    }
+  ]
+}

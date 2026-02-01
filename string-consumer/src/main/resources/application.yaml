@@ -1,0 +1,28 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: app-kafka-consumer
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: group-1
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+app:
+  kafka:
+    topic:
+      name: str-topic
+      partitions: 2
+      replicas: 1
+
+logging:
+  level:
+    org.apache.kafka: INFO
+    org.springframework.kafka: INFO

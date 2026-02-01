@@ -1,0 +1,1 @@
+https://start.spring.io/#!type=maven-project&language=java&platformVersion=3.5.10&packaging=jar&configurationFileFormat=yaml&jvmVersion=21&groupId=com.kafka&artifactId=producer&name=producer&description=POC%20com%20Spring%20e%20Kafka&packageName=com.kafka.producer&dependencies=lombok,devtools,web,kafka
