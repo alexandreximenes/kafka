@@ -1,0 +1,12 @@
+{
+  "name": "OrderId",
+  "namespace": "com.learnavro.domain.generated",
+  "type": "record",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    }
+  ],
+  "doc": "Avro sobre Id do pedido"
+}

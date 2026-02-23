@@ -1,0 +1,72 @@
+services:
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_NODE_ID: 1
+      KAFKA_CLUSTER_ID: "ae0c8d8a-69da-40e1-b416-569a54ceb40b"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
+      KAFKA_LOG_DIRS: "/tmp/kraft-combined-logs"
+
+    networks:
+      - kafka-net
+
+  schema-registry:
+    image: apicurio/apicurio-registry:3.0.0.M4
+    container_name: schema-registry
+    depends_on:
+      - kafka
+    networks:
+      - kafka-net
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
+    environment:
+      REGISTRY_KAFKASQL_BOOTSTRAP_SERVERS: kafka:29092
+      REGISTRY_KAFKASQL_TOPIC: apicurio-registry-storage
+      REGISTRY_KAFKASQL_GROUP_ID: apicurio-registry
+      PICURIO_STORAGE_TYPE: kafkasql
+      
+      # 🔥 Modo compatível com Confluent
+      REGISTRY_CONFLUENT_API_ENABLED: "true"
+      REGISTRY_AUTH_ANONYMOUS_READ_ACCESS_ENABLED: "true"
+      REGISTRY_AUTH_ANONYMOUS_WRITE_ACCESS_ENABLED: "true"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/apis/registry/v3"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  kafka-ui:
+    image: ghcr.io/kafbat/kafka-ui:latest
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+      - schema-registry
+    networks:
+      - kafka-net
+    ports:
+      - "8000:8080"
+    restart: unless-stopped
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
+
+networks:
+  kafka-net:
+    driver: bridge
